@@ -1,3 +1,9 @@
+<div style="margin: 0; padding: 0; line-height: 0;">
+  <img width="100%" height="350" alt="damn js-Photoroom" src="https://github.com/user-attachments/assets/508b8cfa-f06e-44e7-ad64-85d800fae81e" style="display: block;" />
+</div>
+
+
+
 # damn.js — DevTools Error Insight Assistant  
 _A part of my **Idea Series**_
 
