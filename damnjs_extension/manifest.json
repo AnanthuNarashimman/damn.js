@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "damn.js",
+  "description": "DevTools error insight assistant. Provides quick explanations for console errors.",
+  "version": "0.1.0",
+  "icons": {
+    "128": "icons/128.png"
+  },
+  "devtools_page": "devtools/devtools.html",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  }
+}
