@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function addError(errorData) {
-  error.unshift(errorData);
+  errors.unshift(errorData);
   if (errors.length > 100) errors.pop();
   renderErrors();
 }
@@ -41,7 +41,7 @@ function addError(errorData) {
 function renderErrors() {
   const filtered = errors.filter(err => {
     const typeKey = err.type === 'window.onerror' ? 'window.onerror' :
-      err.type === 'unhandledRejction' ?
+      err.type === 'unhandledRejection' ?
         'unhandledRejection' :
         'console.error';
 

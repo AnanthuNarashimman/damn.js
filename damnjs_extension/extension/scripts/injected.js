@@ -60,7 +60,7 @@ This Script is used for error detection and broadcasting.
     // Captures code crashing bugs or mistakes (undefined, null, Parsing errors, thrown Errors)
     window.addEventListener('error', (event) => {
         const error = {
-            td: Date.now() + Math.random(),
+            id: Date.now() + Math.random(),
             type: 'window.onerror',
             message: event.message,
             filename: event.filename,
@@ -91,10 +91,10 @@ This Script is used for error detection and broadcasting.
     window.addEventListener('unhandledrejection', (event) => {
         const error = {
             id: Date.now() + Math.random(),
-            type: 'unhandledrejection',
+            type: 'unhandledRejection',
             message: String(event.reason),
             stack: event.reason && event.reason.stack ? event.reason.stack: 'No stack trace',
-            timestamp: Date.toISOString(),
+            timestamp: new Date().toISOString(),
             context: {
                 url: window.location.href,
                 userAgent: navigator.userAgent
@@ -108,7 +108,7 @@ This Script is used for error detection and broadcasting.
 
         window.postMessage({
             type: 'DAMN_ERROR',
-            source: 'detected',
+            source: 'injected',
             data: error
         }, '*');
     });
