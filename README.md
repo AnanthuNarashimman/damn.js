@@ -161,7 +161,7 @@ Development Roadmap
 
 ### **Phase 2 — Backend + AI Integration** (In Progress)
 - Backend API setup (Vercel + Express)
-- OpenAI/Gemini integration
+- OpenAI/Gemini integration (Gemini focused for now)
 - Explain endpoint (error explanations)
 - Generate-prompt endpoint (spell generator)
 - Error context enhancement
