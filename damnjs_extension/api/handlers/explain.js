@@ -49,6 +49,16 @@ module.exports = async (req, res) => {
         });
     } catch(error) {
         console.error('Gemini API error:', error);
+        
+        // Check if it's a 503 Service Unavailable error
+        if (error.message && (error.message.includes('503') || error.message.includes('overloaded') || error.message.includes('temporarily unavailable'))) {
+            return res.status(503).json({
+                error: 'Gemini API Service Unavailable (503)',
+                message: '503: The Google Gemini API is temporarily unavailable due to high traffic. Please try again in a few moments.',
+                retryable: true
+            });
+        }
+        
         res.status(500).json({
             error: 'Failed to explain error',
             message: error.message

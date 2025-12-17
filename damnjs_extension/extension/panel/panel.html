@@ -4,32 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>damn.js</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="panel.css">
 </head>
 <body>
   <div class="damn-container">
     <!-- Header -->
     <div class="damn-header">
-      <h1>🔥 damn.js</h1>
-      <div class="damn-status">Listening...</div>
+      <div class="header-content">
+        <div class="logo">
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h1>damn.js</h1>
+        </div>
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">Listening</span>
+        </div>
+      </div>
     </div>
 
     <!-- Filters -->
     <div class="damn-filters">
-      <label>
-        <input type="checkbox" id="filter-error" checked> console.error
-      </label>
-      <label>
-        <input type="checkbox" id="filter-window" checked> window.onerror
-      </label>
-      <label>
-        <input type="checkbox" id="filter-promise" checked> Unhandled Promise
-      </label>
+      <div class="filters-wrapper">
+        <label class="filter-item">
+          <input type="checkbox" id="filter-error" checked>
+          <span class="filter-label">console.error</span>
+        </label>
+        <label class="filter-item">
+          <input type="checkbox" id="filter-window" checked>
+          <span class="filter-label">window.onerror</span>
+        </label>
+        <label class="filter-item">
+          <input type="checkbox" id="filter-promise" checked>
+          <span class="filter-label">Unhandled Promise</span>
+        </label>
+      </div>
     </div>
 
     <!-- Error List -->
     <div id="error-list" class="damn-error-list">
-      <p class="placeholder">No errors yet. Keep coding! 🚀</p>
+      <div class="placeholder">
+        <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h3>No errors detected</h3>
+        <p>Your application is running smoothly</p>
+      </div>
     </div>
   </div>
 

@@ -20,9 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   filterCheckboxes.forEach(cb => {
-    cb.addEventListener('click', (e) => {
-      const type = e.target.id.replace('filter-', '');
-      filters[type] = e.target.checked;
+    cb.addEventListener('change', (e) => {
+      const filterId = e.target.id;
+      if (filterId === 'filter-error') {
+        filters['console.error'] = e.target.checked;
+      } else if (filterId === 'filter-window') {
+        filters['window.onerror'] = e.target.checked;
+      } else if (filterId === 'filter-promise') {
+        filters['unhandledRejection'] = e.target.checked;
+      }
       renderErrors();
     });
   });
@@ -49,7 +55,16 @@ function renderErrors() {
   });
 
   if (filtered.length === 0) {
-    errorListEl.innerHTML = '<p class="placeholder">No errors yet. Keep coding!</p>';
+    errorListEl.innerHTML = `
+      <div class="placeholder">
+        <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h3>No errors detected</h3>
+        <p>Your application is running smoothly</p>
+      </div>
+    `;
     return;
   }
 
@@ -61,8 +76,18 @@ function renderErrors() {
         <div class="error-time">${new Date(err.timestamp).toLocaleTimeString()}</div>
       </div>
       <div class="error-actions">
-        <button class="btn btn-explain" data-error-id="${err.id}">💡 Explain</button>
-        <button class="btn btn-spell" data-error-id="${err.id}">✨ Spell</button>
+        <button class="btn btn-explain" data-error-id="${err.id}">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3m.08 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Explain
+        </button>
+        <button class="btn btn-spell" data-error-id="${err.id}">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636-.707.707M21 12h-1M4 12H3m3.343-5.657-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Spell
+        </button>
       </div>
     </div>
   `).join('');
@@ -122,7 +147,32 @@ function explainError(errorId) {
     `;
     updateModal('Error Explanation', html);
   }).catch(err => {
-    updateModal('Error', `<p style="color: #f85149;"Failed to explain error: ${err.message}</p>`);
+    let errorMessage = err.message;
+    let errorHtml = '';
+    
+    // Check if it's a 503 error from response
+    if (err.message && err.message.includes('503')) {
+      errorHtml = `
+        <div class="error-notice">
+          <svg class="error-icon" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#F59E0B" stroke-width="2"/>
+            <path d="M12 8v4m0 4h.01" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3>Gemini API Temporarily Unavailable</h3>
+          <p>The Google Gemini model is currently experiencing high traffic. This is not an issue with damn.js.</p>
+          <p><strong>What you can do:</strong></p>
+          <ul>
+            <li>Wait a few moments and try again</li>
+            <li>The request will automatically retry up to 3 times</li>
+            <li>If the issue persists, please try again in a few minutes</li>
+          </ul>
+        </div>
+      `;
+    } else {
+      errorHtml = `<p class="error-text">Failed to explain error: ${escapeHtml(errorMessage)}</p>`;
+    }
+    
+    updateModal('Error', errorHtml);
   });
 }
 
@@ -140,13 +190,36 @@ function castSpell(errorId) {
         <button class="copy-btn">Copy</button>
         <pre>${escapeHtml(result.prompt)}</pre>
       </div>
-      <p style="font-size: 12px; color: #8b949e; margin-top: 12px;">
+      <p style="font-size: 12px; color: var(--text-secondary); margin-top: 12px;">
         Use this prompt in your favorite AI tool (Cursor, Claude, ChatGPT) to get structured debugging help.
       </p>
     `;
-    updateModal('Spell Generated ✨', html);
+    updateModal('Spell Generated', html);
   }).catch(err => {
-    updateModal('Error', `<p style="color: #f85149;">Failed to generate spell: ${err.message}</p>`);
+    let errorHtml = '';
+    
+    if (err.message && err.message.includes('503')) {
+      errorHtml = `
+        <div class="error-notice">
+          <svg class="error-icon" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#F59E0B" stroke-width="2"/>
+            <path d="M12 8v4m0 4h.01" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3>Gemini API Temporarily Unavailable</h3>
+          <p>The Google Gemini model is currently experiencing high traffic. This is not an issue with damn.js.</p>
+          <p><strong>What you can do:</strong></p>
+          <ul>
+            <li>Wait a few moments and try again</li>
+            <li>The request will automatically retry up to 3 times</li>
+            <li>If the issue persists, please try again in a few minutes</li>
+          </ul>
+        </div>
+      `;
+    } else {
+      errorHtml = `<p class="error-text">Failed to generate spell: ${escapeHtml(err.message)}</p>`;
+    }
+    
+    updateModal('Error', errorHtml);
   });
 }
 
@@ -205,7 +278,9 @@ function closeModal() {
 
 // function to copy prompt to clipboard
 function copyToClipboard(btn) {
-  const text = btn.nextElementSibling.innerText;
+  const promptBox = btn.parentElement;
+  const preElement = promptBox.querySelector('pre');
+  const text = preElement ? preElement.textContent : btn.nextElementSibling.innerText;
   navigator.clipboard.writeText(text).then(() => {
     const original = btn.textContent;
     btn.textContent = '✓ Copied';
