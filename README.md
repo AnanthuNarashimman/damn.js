@@ -108,6 +108,86 @@ Click "✨ Spell" to generate a structured debugging prompt that includes:
 **Architecture:**
 - Injected script (page context) → Content script (bridge) → DevTools panel (UI)
 - DevTools panel → Backend API → AI model → Response
+
+---
+
+## 🛠️ Local Setup & Installation
+
+> **⚠️ UNDER ACTIVE DEVELOPMENT**  
+> These setup instructions are subject to change at any time as the project evolves.  
+> Dependencies, configuration steps, and file structure may be modified without notice.  
+> If you encounter issues, check for updates or open an issue.
+
+### Prerequisites
+- **Node.js** (v18 or higher recommended)
+- **npm** or **yarn**
+- **Chrome Browser** (latest version)
+- **API Key** for AI service (OpenAI or Google Gemini)
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/damnjs.git
+cd damnjs
+```
+
+### 2. Backend Setup
+```bash
+cd damnjs_extension/api
+npm install
+```
+
+Create a `.env` file in the `api/` directory:
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+# OR
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+### 3. Run Backend Locally (Development)
+```bash
+# In the api/ directory
+npm run dev
+# or
+vercel dev
+```
+
+The API should be running at `http://localhost:3000` (or the port Vercel assigns).
+
+### 4. Load Chrome Extension
+1. Open Chrome and navigate to `chrome://extensions/`
+2. Enable **Developer mode** (toggle in top right)
+3. Click **Load unpacked**
+4. Select the `damnjs_extension/extension/` folder
+5. The damn.js extension should now appear in your extensions list
+
+### 5. Configure API Endpoint (Development)
+Update the API endpoint in `extension/panel/api-client.js` to point to your local backend:
+```javascript
+const API_BASE_URL = 'http://localhost:3000'; // Change as needed
+```
+
+### 6. Test the Extension
+1. Open any webpage in Chrome
+2. Open DevTools (`F12` or `Ctrl+Shift+I`)
+3. Look for the **damn.js** tab in DevTools
+4. Trigger an error on the page (e.g., open console and type: `throw new Error('test')`)
+5. The error should appear in the damn.js panel
+6. Test the "💡 Explain" and "✨ Spell" buttons
+
+### Development Notes
+- **Hot Reload:** After making changes to extension files, click the reload icon on `chrome://extensions/` for the damn.js extension
+- **Backend Changes:** Restart the dev server after modifying backend code
+- **API Keys:** Never commit your `.env` file. It's included in `.gitignore`
+- **CORS:** The backend is configured for development. For production, update CORS settings accordingly
+
+### Troubleshooting
+- **Extension not appearing:** Ensure you selected the correct folder (`extension/` not the root)
+- **API errors:** Check that your API key is valid and the backend is running
+- **No errors showing:** Check browser console for messaging errors between scripts
+- **DevTools panel blank:** Refresh the page and reopen DevTools
+
+> **Remember:** This is an experimental project. Setup steps, dependencies, and configuration may change as development progresses.
+
 ---
 
 > **⚠️ Subject to change** — File structure is being actively developed and may be reorganized
