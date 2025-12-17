@@ -61,11 +61,28 @@ function renderErrors() {
         <div class="error-time">${new Date(err.timestamp).toLocaleTimeString()}</div>
       </div>
       <div class="error-actions">
-        <button class="btn btn-explain" onclick="explainError(${err.id})">💡 Explain</button>
-        <button class="btn btn-spell" onclick="castSpell(${err.id})">✨ Spell</button>
+        <button class="btn btn-explain" data-error-id="${err.id}">💡 Explain</button>
+        <button class="btn btn-spell" data-error-id="${err.id}">✨ Spell</button>
       </div>
     </div>
   `).join('');
+
+  // Add event listeners to buttons (CSP-compliant)
+  document.querySelectorAll('.btn-explain').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const errorId = parseFloat(e.target.dataset.errorId);
+      explainError(errorId);
+    });
+  });
+
+  document.querySelectorAll('.btn-spell').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const errorId = parseFloat(e.target.dataset.errorId);
+      castSpell(errorId);
+    });
+  });
 
   document.querySelectorAll('.error-card').forEach(card => {
     card.addEventListener('click', (e) => {
@@ -116,11 +133,11 @@ function castSpell(errorId) {
 
   showModal('Generating Spell...', '<p>Crafting the perfect debugging prompt...</p>');
 
-  ApiClient.generatePrompt(error).then(result => {
+  ApiClient.generatePrompt(error, errors).then(result => {
     const html = `
       <strong>Your AI-Ready Debugging Prompt:</strong>
       <div class="prompt-box">
-        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
+        <button class="copy-btn">Copy</button>
         <pre>${escapeHtml(result.prompt)}</pre>
       </div>
       <p style="font-size: 12px; color: #8b949e; margin-top: 12px;">
@@ -140,12 +157,20 @@ function showModal(title, content) {
   modal.id = 'damn-modal';
   modal.innerHTML = `
   <div class="modal">
-      <button class="modal-close" onclick="closeModal()">×</button>
+      <button class="modal-close">×</button>
       <h2>${title}</h2>
       ${content}
     </div>
   `;
   document.body.appendChild(modal);
+  
+  // Add close button event listener (CSP-compliant)
+  modal.querySelector('.modal-close').addEventListener('click', closeModal);
+  
+  // Close on overlay click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
 }
 
 // function to update modal from loading state to display state after getting reponse from explanation function
@@ -154,10 +179,21 @@ function updateModal(title, content) {
   if(modal) {
     modal.querySelector('h2').textContent = title;
     modal.querySelector('.modal').innerHTML = `
-      <button class="modal-close" onclick="closeModal()">×</button>
+      <button class="modal-close">×</button>
       <h2>${title}</h2>
       ${content}
     `;
+    
+    // Re-attach event listeners after updating innerHTML
+    modal.querySelector('.modal-close').addEventListener('click', closeModal);
+    
+    // Attach copy button listener if it exists
+    const copyBtn = modal.querySelector('.copy-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function() {
+        copyToClipboard(this);
+      });
+    }
   }
 }
 

@@ -23,7 +23,7 @@ const ApiClient = {
     },
 
     // function to get prompts for errors from backend
-    async generatePrompt(error) {
+    async generatePrompt(error, allErrors = []) {
         const response = await fetch(`${this.baseUrl}/api/generate-prompt`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -32,7 +32,7 @@ const ApiClient = {
                 stack: error.stack,
                 type: error.type,
                 context: error.context,
-                recentErrors: errors.slice(0,5)
+                recentErrors: allErrors.slice(0,5)
             })
         });
 

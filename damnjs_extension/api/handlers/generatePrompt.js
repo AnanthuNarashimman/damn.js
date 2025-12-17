@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     }
 
     try {
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
         const recentContext = recentErrors && recentErrors.length
             ? `\n\nRecent errors in same session:\n${recentErrors.map(e => `- ${e.message}`).join('\n')}`
