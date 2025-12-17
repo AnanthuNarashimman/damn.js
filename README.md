@@ -138,17 +138,13 @@ npm install
 
 Create a `.env` file in the `api/` directory:
 ```env
-OPENAI_API_KEY=your_openai_api_key_here
-# OR
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 ### 3. Run Backend Locally (Development)
 ```bash
 # In the api/ directory
-npm run dev
-# or
-vercel dev
+node index.js
 ```
 
 The API should be running at `http://localhost:3000` (or the port Vercel assigns).
@@ -306,8 +302,8 @@ damn.js emerged from debugging experiences during hackathons and everyday develo
 ---
 
 ## ⚡ Current Status
-The project is in the **concept and planning** stage.  
-Development will start soon, and the structure or feature list may evolve as the idea matures.
+The project is under **active development** and continuous improvement. 
+Features and structure may evolve as development progresses.
 
 ---
 
