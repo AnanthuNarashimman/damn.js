@@ -3,7 +3,7 @@
 // Object literal that holds necessary functions
 const ApiClient = {
     // backend url
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://damn-u3qhemzpa-ananthunarashimmans-projects.vercel.app',
 
     // function to get error explanations from backend
     async explain(error) {
