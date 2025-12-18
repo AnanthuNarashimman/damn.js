@@ -20,11 +20,25 @@ window.addEventListener('message', (event) => {
 
     // Checks if the extension is enabled and functioning
     if(chrome.runtime) {
+        // Get the current tab ID and include it with the error
         chrome.runtime.sendMessage({
-            type: 'FORWARD_ERROR',
-            data: event.data.data
+            type: 'GET_TAB_ID'
+        }).then(response => {
+            chrome.runtime.sendMessage({
+                type: 'FORWARD_ERROR',
+                tabId: response.tabId,
+                data: event.data.data
+            }).catch(err => {
+                // Silently fails if Devtools not open
+            });
         }).catch(err => {
-            // Silently fails if Devtools not open
+            // Fallback: send without tabId if we can't get it
+            chrome.runtime.sendMessage({
+                type: 'FORWARD_ERROR',
+                data: event.data.data
+            }).catch(err => {
+                // Silently fails if Devtools not open
+            });
         });
     }
 });

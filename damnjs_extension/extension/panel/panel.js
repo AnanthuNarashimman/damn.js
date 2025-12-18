@@ -10,11 +10,15 @@ let filters = {
 
 const errorListEl = document.getElementById('error-list');
 const filterCheckboxes = document.querySelectorAll('.damn-filters input');
+const inspectedTabId = chrome.devtools.inspectedWindow.tabId;
 
 document.addEventListener('DOMContentLoaded', () => {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.type === 'FORWARD_ERROR') {
-      addError(request.data);
+      // Only accept errors from the currently inspected tab
+      if (request.tabId === inspectedTabId) {
+        addError(request.data);
+      }
       sendResponse({ success: true });
     }
   });
