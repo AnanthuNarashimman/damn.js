@@ -2,8 +2,8 @@
 
 // Object literal that holds necessary functions
 const ApiClient = {
-    // backend url
-    baseUrl: 'https://damn-u3qhemzpa-ananthunarashimmans-projects.vercel.app',
+    // vercel url
+    baseUrl: 'https://damn-7q8j3fc9f-ananthunarashimmans-projects.vercel.app',
 
     // function to get error explanations from backend
     async explain(error) {
