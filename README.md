@@ -1,9 +1,3 @@
-<div style="margin: 0; padding: 0; line-height: 0;">
-  <img width="100%" height="350" alt="damn js-Photoroom" src="https://github.com/user-attachments/assets/508b8cfa-f06e-44e7-ad64-85d800fae81e" style="display: block;" />
-</div>
-
-
-
 # damn.js — DevTools Error Insight Assistant  
 _A part of my **Idea Series**_
 
@@ -54,7 +48,20 @@ This significantly reduces context switching and helps developers debug faster w
 
 ## 📸 Screenshots
 
+<div align="center">
+  <img width="775" alt="damn.js Panel Overview" src="https://github.com/user-attachments/assets/29081820-1a0d-478f-bccc-9589502f0d62" />
+  <p><em>The damn.js panel showing captured errors in real-time</em></p>
+</div>
 
+<div align="center">
+  <img width="646" alt="AI Explanation Feature" src="https://github.com/user-attachments/assets/076d4006-c3b3-4c0b-bd04-f93b8de3df57" />
+  <p><em>AI-powered error explanation with documentation references</em></p>
+</div>
+
+<div align="center">
+  <img width="671" alt="Spell Generator" src="https://github.com/user-attachments/assets/f688c54f-e668-443b-8cab-9a1ec98a8e9f" />
+  <p><em>Generated debugging prompt ready to copy</em></p>
+</div>
 
 ---
 
@@ -66,8 +73,8 @@ The backend is already hosted and ready to use.
 ### Quick Start with v1:
 1. Clone the `vercel-version` branch:
 ```bash
-   git clone -b vercel-version https://github.com/yourusername/damnjs.git
-   cd damnjs
+git clone -b vercel-version https://github.com/yourusername/damnjs.git
+cd damnjs
 ```
 
 2. Load the extension in Chrome:
