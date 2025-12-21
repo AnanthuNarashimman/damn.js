@@ -1,9 +1,3 @@
-<div style="margin: 0; padding: 0; line-height: 0;">
-  <img width="100%" height="350" alt="damn js-Photoroom" src="https://github.com/user-attachments/assets/508b8cfa-f06e-44e7-ad64-85d800fae81e" style="display: block;" />
-</div>
-
-
-
 # damn.js — DevTools Error Insight Assistant  
 _A part of my **Idea Series**_
 
@@ -48,7 +42,56 @@ This significantly reduces context switching and helps developers debug faster w
 - Developers can copy the generated "spell" and paste it directly into Claude, Cursor, ChatGPT, etc.
 
 **Backend:**
-- Serverless API (Vercel + Express) powered by under_development-orange)
+- Serverless API (Vercel + Express) powered by AI models
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+  <img width="775" alt="damn.js Panel Overview" src="https://github.com/user-attachments/assets/29081820-1a0d-478f-bccc-9589502f0d62" />
+  <p><em>The damn.js panel showing captured errors in real-time</em></p>
+</div>
+
+<div align="center">
+  <img width="646" alt="AI Explanation Feature" src="https://github.com/user-attachments/assets/076d4006-c3b3-4c0b-bd04-f93b8de3df57" />
+  <p><em>AI-powered error explanation with documentation references</em></p>
+</div>
+
+<div align="center">
+  <img width="671" alt="Spell Generator" src="https://github.com/user-attachments/assets/f688c54f-e668-443b-8cab-9a1ec98a8e9f" />
+  <p><em>Generated debugging prompt ready to copy</em></p>
+</div>
+
+---
+
+## ✅ Try v1 (Working Version)
+
+**v1 of damn.js is fully functional!**  
+The backend is already hosted and ready to use.
+
+### Quick Start with v1:
+1. Clone the `vercel-version` branch:
+```bash
+git clone -b vercel-version https://github.com/yourusername/damnjs.git
+cd damnjs
+```
+
+2. Load the extension in Chrome:
+   - Open `chrome://extensions/`
+   - Enable **Developer mode**
+   - Click **Load unpacked**
+   - Select the `extension/` folder
+
+3. Start using damn.js immediately — no backend setup needed!
+
+> **Note:** v1 is not published on the Chrome Web Store due to developer registration fee constraints. However, it works perfectly via the "Load unpacked" method.
+
+---
+
+## ⚠️ Development Status
+
+![Status](https://img.shields.io/badge/status-under_development-orange)
 
 ⚠️ **This project is under active development.**  
 File structure, features, and implementation details **may change at any time** without notice.
@@ -60,7 +103,9 @@ Expect:
 - UI/UX iterations
 - Architecture evolution
 
-The codebase is fluid and experimental as we work toward a stable MVPing-orange)
+The codebase is fluid and experimental as we work toward a stable MVP.
+
+![Status](https://img.shields.io/badge/status-under_development-orange)
 
 This project is **actively being shaped**, and features may:
 - evolve  
@@ -68,7 +113,9 @@ This project is **actively being shaped**, and features may:
 - be added or removed  
 - be completely restructured as development continues  
 
-The maFeature Set
+---
+
+## 🎁 Feature Set
 **Current implementation (subject to change):**
 
 ### ✔ Real-time Error Mirroring  
@@ -89,7 +136,11 @@ Click "✨ Spell" to generate a structured debugging prompt that includes:
 - Error details and context
 - Stack trace
 - Recent error history
-- Specific questi
+- Specific questions for AI assistants
+
+---
+
+## 🧰 Tech Stack
 > **Note:** Tech stack may evolve during development
 
 **Frontend (Chrome Extension):**
@@ -186,8 +237,9 @@ const API_BASE_URL = 'http://localhost:3000'; // Change as needed
 
 ---
 
-> **⚠️ Subject to change** — File structure is being actively developed and may be reorganized
+## 📁 Project Structure
 
+> **⚠️ Subject to change** — File structure is being actively developed and may be reorganized
 ```
 damnjs_extension/
 │
@@ -221,10 +273,12 @@ damnjs_extension/
         ├── panel.js              # Core panel logic
         ├── panel.css             # Styling (dark theme)
         ├── api-client.js         # Backend API calls
-        └── utils.js              # Helper functions Structure
+        └── utils.js              # Helper functions
 ```
 
-Development Roadmap
+---
+
+## 🗺️ Development Roadmap
 > **Note:** Timeline and features are flexible and may change
 
 ### **Phase 1 — Error Mirroring Pipeline** (In Progress)
@@ -254,6 +308,11 @@ Development Roadmap
 - Stack Overflow integration
 - Source map awareness
 - Minified code decoding
+
+---
+
+## 📍 Current Progress
+
 **Active Development** — Building the MVP with error mirroring and AI integration.
 
 **What's Working:**
@@ -268,7 +327,7 @@ Development Roadmap
 - Backend deployment to Vercel
 - UI polish and refinements
 
-Expect rapid iteration and frequent changes to code structure, features, and architecture
+Expect rapid iteration and frequent changes to code structure, features, and architecture.
 
 ---
 
@@ -306,4 +365,3 @@ The project is under **active development** and continuous improvement.
 Features and structure may evolve as development progresses.
 
 ---
-
