@@ -250,6 +250,15 @@ damnjs_extension/
 │       ├── explain.js            # AI error explanation logic
 │       └── generatePrompt.js     # Debugging prompt generator
 │
+├── landing_page/                 # Landing Page (Separate from Extension)
+│   ├── Page.html                 # Marketing page for damn.js
+│   ├── Page.css                  # Styling
+│   ├── vercel.json               # Vercel deployment config
+│   └── images/                   # Assets
+│
+│   **Note:** This is just a landing page for the project.
+│   It is NOT part of the browser extension functionality.
+│
 └── extension/                    # Chrome Extension
     ├── manifest.json             # Extension manifest (V3)
     │
