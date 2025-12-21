@@ -65,9 +65,23 @@
 
       <!-- Hero Visual -->
       <div class="hero-demo-container">
-        <img src="images/Demo_Image.png" alt="damn.js DevTools Extension Demo" class="hero-demo-image">
+        <img src="images/Demo_Image.png" alt="damn.js DevTools Extension Demo" class="hero-demo-image" id="heroImage">
       </div>
     </section>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose" aria-label="Close modal">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <img src="images/Demo_Image.png" alt="damn.js DevTools Extension Demo - Full View" class="modal-image">
+      </div>
+    </div>
 
     <!-- Features Bento Grid -->
     <section id="features" class="container" style="padding-bottom: 10rem;">
@@ -474,6 +488,35 @@
   </div>
 
   <script>
+    // Image Modal functionality (mobile only)
+    const heroImage = document.getElementById('heroImage');
+    const imageModal = document.getElementById('imageModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalBackdrop = imageModal.querySelector('.modal-backdrop');
+    
+    function openModal() {
+      if (window.innerWidth <= 768) {
+        imageModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    
+    function closeModal() {
+      imageModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    heroImage.addEventListener('click', openModal);
+    modalClose.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', closeModal);
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+    
     // Hamburger menu toggle
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
