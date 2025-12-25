@@ -48,7 +48,7 @@
         A DevTools extension that bridges the gap between your errors and AI-powered debugging assistance. No more jumping between tabs.
       </p>
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="#install" class="btn btn-primary">
+        <a href="#install" class="btn btn-primary" target="_blank">
           Start Debugging
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.2s;">
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -399,17 +399,22 @@
         <h2 style="font-size: 2.25rem; margin-bottom: 1rem;">Ready to debug smarter?</h2>
         <p style="margin-bottom: 2.5rem; font-size: 1.15rem;">Open source and free to use locally. Join developers who are debugging faster.</p>
         
-        <div style="background: linear-gradient(135deg, #fafafa 0%, #fff 100%); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; font-family: var(--font-mono); font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: all 0.2s;" onmouseover="this.style.boxShadow='var(--shadow-md)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='var(--shadow-sm)'; this.style.transform='translateY(0)';">
-          <span style="color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">git clone https://github.com/AnanthuNarashimman/damn.js</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer; color: var(--text-primary); flex-shrink: 0; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)';" onmouseout="this.style.transform='scale(1)';">
+        <div id="copyContainer" style="background: linear-gradient(135deg, #fafafa 0%, #fff 100%); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; font-family: var(--font-mono); font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: all 0.2s;" onmouseover="this.style.boxShadow='var(--shadow-md)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='var(--shadow-sm)'; this.style.transform='translateY(0)';">
+          <span id="gitCommand" style="color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">git clone https://github.com/AnanthuNarashimman/damn.js</span>
+          <svg id="copyButton" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer; color: var(--text-primary); flex-shrink: 0; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)';" onmouseout="this.style.transform='scale(1)';">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
         </div>
 
-        <a href="https://github.com/AnanthuNarashimman/damn.js" class="btn btn-primary" style="width: 100%;">
-          View on GitHub
-        </a>
+        <div style="display: flex; gap: 1rem; width: 100%;">
+          <a href="https://github.com/AnanthuNarashimman/damn.js" class="btn btn-primary" style="flex: 1;" target="_blank">
+            View on GitHub
+          </a>
+          <button id="copyGitUrlButton" class="btn btn-secondary" style="flex: 1; cursor: pointer; border: 1px solid var(--border-subtle);" title="Copy GitHub URL">
+            Copy URL
+          </button>
+        </div>
         
         <div style="margin-top: 1.25rem; padding: 0.75rem 1rem; background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 8px; display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;">
@@ -546,8 +551,56 @@
       }
     });
 
-    // Set current year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // Copy button functionality
+    const copyButton = document.getElementById('copyButton');
+    const copyContainer = document.getElementById('copyContainer');
+    const gitCommand = document.getElementById('gitCommand');
+    
+    copyButton.addEventListener('click', function() {
+      const textToCopy = gitCommand.textContent;
+      
+      // Use the Clipboard API
+      navigator.clipboard.writeText(textToCopy).then(function() {
+        // Visual feedback - change to checkmark
+        copyButton.innerHTML = `
+          <polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2" fill="none"></polyline>
+        `;
+        copyButton.style.color = '#22c55e';
+        
+        // Reset after 2 seconds
+        setTimeout(function() {
+          copyButton.innerHTML = `
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          `;
+          copyButton.style.color = '';
+        }, 2000);
+      }).catch(function(err) {
+        console.error('Failed to copy: ', err);
+      });
+    });
+
+    // Copy GitHub URL button functionality
+    const copyGitUrlButton = document.getElementById('copyGitUrlButton');
+    
+    copyGitUrlButton.addEventListener('click', function() {
+      const gitUrl = 'https://github.com/AnanthuNarashimman/damn.js';
+      
+      navigator.clipboard.writeText(gitUrl).then(function() {
+        const originalText = copyGitUrlButton.textContent;
+        copyGitUrlButton.textContent = '✓ Copied!';
+        copyGitUrlButton.style.background = 'linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)';
+        copyGitUrlButton.style.color = '#15803d';
+        
+        setTimeout(function() {
+          copyGitUrlButton.textContent = originalText;
+          copyGitUrlButton.style.background = '';
+          copyGitUrlButton.style.color = '';
+        }, 2000);
+      }).catch(function(err) {
+        console.error('Failed to copy URL: ', err);
+      });
+    });
 
     // Add smooth hover effects to primary buttons
     document.querySelectorAll('.btn-primary').forEach(btn => {
