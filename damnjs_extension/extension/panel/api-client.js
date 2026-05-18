@@ -14,7 +14,8 @@ const ApiClient = {
                 message: error.message,
                 stack: error.stack,
                 type: error.type,
-                context: error.context
+                context: error.context,
+                details: error
             })
         });
 

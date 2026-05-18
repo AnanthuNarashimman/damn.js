@@ -3,7 +3,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 module.exports = async (req, res) => {
-    const { message, stack, type, context } = req.body;
+    const { message, stack, type, context, details } = req.body;
 
     if (!message) {
         return res.status(400).json({ error: 'Error message is required' });
@@ -11,24 +11,47 @@ module.exports = async (req, res) => {
 
     try {
         const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
+        const extraDetails = details ? JSON.stringify(details, null, 2) : 'Not available';
 
-        const prompt = `You are an expert JavaScript debugger. A developer encountered this error:
-                        **Error Type:** ${type}
-                        **Error Message:** ${message}
-                        **Stack Trace:**
-                        ${stack || 'Not available'}
+        const prompt = `You are an expert JavaScript debugging assistant inside a Chrome DevTools extension.
 
-                        **Context:**
-                        - URL: ${context?.url || 'Unknown'}
-                        - User Agent: ${context?.userAgent || 'Unknown'}
+A developer clicked an "Explain" button for one captured browser error. Explain the error using the exact runtime context below. Be specific, practical, and avoid generic advice unless the available data is genuinely limited.
 
-                        Provide:
-                        1. A clear, concise explanation of what this error means (2-3 sentences)
-                        2. The most likely cause
-                        3. 2-3 practical fixes or debugging steps
-                        4. Any relevant documentation links or MDN references
+Captured error:
+- Type: ${type || 'Unknown'}
+- Message: ${message}
+- Page URL: ${context?.url || 'Unknown'}
+- User Agent: ${context?.userAgent || 'Unknown'}
 
-                        Format your response as JSON with keys: explanation, likely_cause, fixes (array), references (array of {title, url})`;
+Stack trace:
+${stack || 'Not available'}
+
+Full captured payload:
+${extraDetails}
+
+How to reason:
+- First identify what category this is: console log, runtime exception, resource load error, unhandled promise rejection, CSP violation, fetch failure, or XHR failure.
+- Use the error type and captured fields such as filename, line, column, request URL, status, responseType, tagName, blockedURI, violatedDirective, method, and recent page URL when present.
+- If this is a network error, distinguish HTTP failures like 404/500 from browser-blocked/CORS/CSP/status-0 cases.
+- If this is a resource error, explain which resource likely failed and what page element caused it.
+- If this is a runtime exception, explain what the stack says about the likely failing code path.
+- Do not invent file contents, function behavior, server responses, or unavailable source code.
+
+Return only valid JSON with this shape:
+{
+  "explanation": "2-4 sentences explaining what happened and why this specific captured context matters.",
+  "likely_cause": "The most likely cause in one concrete sentence.",
+  "fixes": [
+    "Most useful first debugging or fix step.",
+    "Second practical step.",
+    "Third practical step if relevant."
+  ],
+  "references": [
+    { "title": "Short documentation title", "url": "https://..." }
+  ]
+}
+
+References should be official docs such as MDN, Chrome docs, web.dev, or framework docs when relevant. Include 0-3 references.`;
 
         const result = await model.generateContent(prompt);
         const responseText = result.response.text();
@@ -43,8 +66,13 @@ module.exports = async (req, res) => {
         };
 
         res.json({
-            explanation: parsed.explanation,
-            fix: (parsed.fixes && parsed.fixes[0]) || 'Check the stack trace and logs',
+            explanation: [
+                parsed.explanation,
+                parsed.likely_cause ? `Likely cause: ${parsed.likely_cause}` : null
+            ].filter(Boolean).join('\n\n'),
+            fix: parsed.fixes && parsed.fixes.length
+                ? parsed.fixes.join('\n')
+                : 'Check the stack trace and captured request/resource details.',
             references: parsed.references || []
         });
     } catch(error) {
