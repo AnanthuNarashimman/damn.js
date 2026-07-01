@@ -3,8 +3,6 @@ _A part of my **Idea Series**_
 
 ![Status](https://img.shields.io/badge/status-under_development-yellow)
 ![Category](https://img.shields.io/badge/type-devtools_extension-blue)
-![Stage](https://img.shields.io/badge/stage-idea_to_mvp-purple)
-![License](https://img.shields.io/badge/license-undecided-lightgrey)
 
 ---
 
